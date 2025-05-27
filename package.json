@@ -13,6 +13,10 @@
     "onStartupFinished"
   ],
   "main": "./dist/extension.js",
+  "extensionDependencies": [
+    "ms-vscode.cmake-tools",
+    "marus25.cortex-debug"
+  ],
   "contributes": {
     "configuration":{
       "title": "Cubi IDE",
@@ -208,7 +212,6 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "vscode-cmake-tools": "^1.2.0",
-    "marus25.cortex-debug": "^1.14.0"
+    "vscode-cmake-tools": "^1.2.0"
   }
 }
