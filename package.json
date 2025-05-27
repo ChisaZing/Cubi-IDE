@@ -1,0 +1,214 @@
+{
+  "name": "cubi-ide",
+  "displayName": "Cubi IDE",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other","Debuggers"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration":{
+      "title": "Cubi IDE",
+      "description": "Configuration for Cubi IDE",
+      "properties": {
+        "cubi.ide.openocdPath": {
+          "type": "string",
+          "default": "openocd",
+          "description": "Path to the OpenOCD."
+        },
+        "cubi.ide.gdbPath": {
+          "type": "string",
+          "default": "arm-none-eabi-gdb",
+          "description": "Path to the GDB."
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cubi",
+          "title": "Cubi IDE",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "cubi": [
+        {
+          "id": "cubi-cmake",
+          "name": "CMAKE",
+          "icon": "",
+          "when": "iocFileExists"
+        },
+        {
+          "id": "cubi-openocd",
+          "name": "OPENOCD",
+          "icon": "",
+          "when":"iocFileExists"
+        }
+      ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "cubi.configure",
+          "group": "inline",
+          "when": "view == cubi-cmake && viewItem == cubiCMakeConfigureTarget"
+        },
+        {
+          "command": "cubi.selectBuildConfig",
+          "group": "inline",
+          "when": "view == cubi-cmake && viewItem == cubiCMakeSelectConfigTarget"
+        },
+        {
+          "command": "cubi.reconfigure",
+          "group": "inline",
+          "when": "view == cubi-cmake && viewItem == cubiCMakeReconfigureTarget"
+        },
+        {
+          "command": "cubi.build",
+          "group": "inline",
+          "when": "view == cubi-cmake && viewItem == cubiCMakeBuildTarget"
+        },
+        {
+          "command": "cubi.clean",
+          "group": "inline",
+          "when": "view == cubi-cmake && viewItem == cubiCMakeCleanTarget"
+        },
+        {
+          "command": "cubi.setSvdFile",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiOpenOCDSetSvdFile"
+        },
+        {
+          "command":"cubi.selectTarget",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiSelectTarget"
+        },
+        {
+          "command": "cubi.generateOpenOCDConfig",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiOpenOCDConfigTarget"
+        },
+        {
+          "command": "cubi.selectAdapter",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiOpenOCDSelectAdapter"
+        },
+        {
+          "command": "cubi.setAdapterSpeed",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiOpenOCDSetAdapterSpeed"
+        },
+        {
+          "command": "cubi.flash",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiOpenOCDFlashTarget"
+        },
+        {
+          "command": "cubi.debug",
+          "group": "inline",
+          "when": "view == cubi-openocd && viewItem == cubiOpenOCDDebugTarget"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "cubi.configure",
+        "title": "Configure",
+        "icon":"media/configure.svg"
+      },
+      {
+        "command": "cubi.selectBuildConfig",
+        "title": "Select Config",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "cubi.reconfigure",
+        "title": "Reconfigure",
+        "icon":"media/configure.svg"
+      },
+      {
+        "command": "cubi.build",
+        "title": "Build",
+        "icon":"media/build.svg"
+      },
+      {
+        "command": "cubi.clean",
+        "title": "Clean",
+        "icon":"media/clean.svg"
+      },
+      {
+        "command":"cubi.setSvdFile",
+        "title": "Set SVD File",
+        "icon": "$(file-symlink-file)"
+      },
+      {
+        "command":"cubi.generateOpenOCDConfig",
+        "title": "Generate OpenOCD Config",
+        "icon": "media/configure.svg"
+      },
+      {
+        "command": "cubi.selectTarget",
+        "title": "Select Target",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "cubi.selectAdapter",
+        "title": "Select Adapter",
+        "icon":"$(edit)"
+      },
+      {
+        "command": "cubi.setAdapterSpeed",
+        "title": "Set Adapter Speed",
+        "icon":"$(edit)"
+      },
+      {
+        "command":"cubi.flash",
+        "title":"Flash",
+        "icon":"$(chip)"
+      },
+      {
+        "command":"cubi.debug",
+        "title":"debug",
+        "icon":"$(debug-alt)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.25.1",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "vscode-cmake-tools": "^1.2.0",
+    "marus25.cortex-debug": "^1.14.0"
+  }
+}
